@@ -1,0 +1,6 @@
+{
+  "name": "magit-section",
+  "description": "Buffers of nested sections that TAB hides and shows, after Magit's magit-section.el",
+  "e8": "0.3.1",
+  "requires": {}
+}
