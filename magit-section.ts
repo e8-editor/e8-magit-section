@@ -862,6 +862,42 @@ const err = (msg: string): never => e8.userError(msg);
 
 /** The same keys in each mode built on magit-section-mode, as magit-section-mode-map. */
 export const sectionCommands = {
+  show: e8.defineCommand({
+    name: "magit-section-show",
+    doc: "Show the body of the current section.",
+    run: () => {
+      const s = currentSection();
+      if (s) show(s);
+    },
+  }),
+  hide: e8.defineCommand({
+    name: "magit-section-hide",
+    doc: "Hide the body of the current section.",
+    run: () => {
+      const s = currentSection();
+      if (!s || !s.parent) return err("Cannot hide root section");
+      hide(s);
+    },
+  }),
+  mouseSetPoint: e8.defineCommand({
+    name: "magit-mouse-set-point",
+    doc: "Like mouse-set-point but also call magit-section-movement-hook.",
+    run: () => {
+      e8.call("mouse-set-point");
+      e8.runHooks("magit-section-movement-hook", currentSection() as unknown as e8.Value);
+    },
+  }),
+  mouseToggle: e8.defineCommand({
+    name: "magit-mouse-toggle-section",
+    doc: "Toggle visibility of the clicked section.  Clicks outside either the section heading or the left fringe are silently ignored.",
+    run: () => {
+      e8.call("mouse-set-point");
+      const s = currentSection();
+      if (!s || !s.parent) return;
+      if (s.hidden) show(s);
+      else hide(s);
+    },
+  }),
   toggle: e8.defineCommand({
     name: "magit-section-toggle",
     doc: "Toggle visibility of the body of the current section.",
@@ -1046,6 +1082,13 @@ export const magitSectionMode = e8.defineMajorMode({
     "M-2": levelsAll[1],
     "M-3": levelsAll[2],
     "M-4": levelsAll[3],
+    "-": "negative-argument" as e8.CommandName,
+    "0": "digit-argument" as e8.CommandName,
+    "5": "digit-argument" as e8.CommandName,
+    "6": "digit-argument" as e8.CommandName,
+    "7": "digit-argument" as e8.CommandName,
+    "8": "digit-argument" as e8.CommandName,
+    "9": "digit-argument" as e8.CommandName,
   },
   setup: () => {
     for (const [name, value] of [
