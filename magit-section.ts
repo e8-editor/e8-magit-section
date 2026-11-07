@@ -475,8 +475,9 @@ function wash(s: Section): void {
 
 /** Puts a section type's keymap on its text, as magit-section--set-section-properties. */
 function setSectionProperties(s: Section): void {
-  const keymap = types.get(s.type)?.keymap;
-  if (!keymap) return;
+  const name = types.get(s.type)?.keymap;
+  if (!name) return;
+  const keymap = (e8.variable(name) ?? name) as e8.Value;
   e8.withSilentModifications(() => {
     if (s.children.length === 0) e8.putTextProperty(s.start, s.end, "keymap", keymap);
     else e8.putTextProperty(s.start, s.content, "keymap", keymap);
@@ -803,12 +804,12 @@ function updatePaint(h: Highlight, s: Section, focused: Section[]): void {
   if (!paint) return;
   if (magitSectionHidden(s)) return;
   const isFocused = focused.includes(s);
-  const now = s.painted ?? "plain";
+  const now = s.painted;
   const doPaint = (on: boolean) => e8.letBind({ "inhibit-read-only": true }, () => e8.saveExcursion(() => e8.withSilentModifications(() => paint(s, on))));
   if (isFocused && now !== "highlight") {
     doPaint(true);
     s.painted = "highlight";
-  } else if (!isFocused && now === "highlight") {
+  } else if (!isFocused && now !== "plain") {
     doPaint(false);
     s.painted = "plain";
   }
@@ -839,7 +840,9 @@ export function magitSectionUpdateHighlight(force = false): void {
     }
   }
   const focused = magitFocusedSections();
-  const candidates = new Set([...(old?.painted ?? []), ...focused]);
+  // Sections not painted yet are painted plainly, as Magit paints them after a refresh or when shown.
+  const unpainted = tree.all.filter((s) => s.painted === undefined && types.get(s.type)?.paint !== undefined && !magitSectionHidden(s));
+  const candidates = new Set([...(old?.painted ?? []), ...focused, ...unpainted]);
   for (const s of candidates) if (tree.all.includes(s)) updatePaint(h, s, focused);
 }
 

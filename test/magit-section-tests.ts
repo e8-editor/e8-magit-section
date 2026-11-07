@@ -367,9 +367,11 @@ ertDeftest("magit-section-a-type-paints-its-text-when-highlighted", () => {
   });
   e8.executeKbdMacro("n");
   e8.executeKbdMacro("p");
-  // Highlighting happens after a command: n to p2 paints it, p back repaints both.
+  // Highlighting happens after a command: n to p2 paints it highlighted and
+  // p1 plainly, as sections not painted yet are; p back repaints both.
   shouldEqual(painted, [
     ["p2", true],
+    ["p1", false],
     ["p2", false],
     ["p1", true],
   ]);
