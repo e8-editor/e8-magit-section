@@ -1058,3 +1058,26 @@ export const magitSectionMode = e8.defineMajorMode({
     e8.addHook("post-command-hook", () => magitSectionUpdateHighlight(), { local: true });
   },
 });
+
+/**
+ * Runs BODY to insert header sections, then makes the first of them the
+ * parent of the rest and adds a blank line, as magit-insert-headers does.
+ */
+export function magitInsertHeaders(body: () => void): void {
+  const parent = insertion?.stack[insertion.stack.length - 1];
+  if (!parent) return body();
+  const before = parent.children.length;
+  body();
+  const headers = parent.children.slice(before);
+  if (headers.length === 0) return;
+  e8.insert("\n");
+  if (headers.length > 1) {
+    const [first, ...rest] = headers;
+    parent.children.splice(before + 1);
+    first.children = rest;
+    first.content = rest[0].start;
+    first.end = rest[rest.length - 1].end;
+    first.heading = true;
+    for (const h of rest) h.parent = first;
+  }
+}
