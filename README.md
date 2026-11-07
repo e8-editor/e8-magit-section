@@ -10,7 +10,7 @@ Most people get it as a requirement of e8-magit, which installs it. To use it on
 e8.usePackage("e8-editor/e8-magit-section");
 ```
 
-E8 installs it at its newest version tag into `repos/` beside `init.ts`, records the commit in `e8-lock.json`, and requires it. `M-x package-vc-upgrade` brings it up to date. Pin a version with `{ rev: "v0.1.0" }`. It needs E8 0.3.1 or newer.
+E8 installs it at its newest version tag into `repos/` beside `init.ts`, records the commit in `e8-lock.json`, and requires it. `M-x package-vc-upgrade` brings it up to date. Pin a version with `{ rev: "v0.2.0" }`. It needs E8 0.3.1 or newer.
 
 ## Using it
 
@@ -19,14 +19,17 @@ In a buffer whose major mode derives from `magit-section-mode`:
 | Key | Does |
 | --- | --- |
 | `TAB` | hide or show the content of the section at point |
-| `C-<tab>` | cycle the section and its children: hidden, the children's headings, everything |
-| `<backtab>`, `S-<tab>` | cycle every top-level section: headings only, or everything |
+| `C-<tab>`, `M-<tab>`, `C-c TAB` | cycle the section and its children: hidden, the children's headings, everything |
+| `<backtab>`, `S-<tab>` | cycle every top-level section |
 | `n`, `p` | the next and previous section that shows |
 | `M-n`, `M-p` | the next and previous sibling |
 | `^` | the parent section |
-| `1` to `4` | show the sections down to that level, hiding those below |
+| `1` to `4` | show the sections around point to that level, hiding those below |
+| `M-1` to `M-4` | show all sections to that level |
 
-The section at point is highlighted in `magit-section-highlight`, and headings are drawn in `magit-section-heading`. `magit-section-initial-visibility-alist` says which kinds of section start hidden, as `[type, "show" | "hide"]` pairs; `magit-section-movement-hook` runs after each move.
+The section at point, or the sibling sections the region selects, are highlighted in `magit-section-highlight`, and headings are drawn in `magit-section-heading`, with the number of children after them. A section made again by a refresh keeps its visibility, found by its identity (its type and value and its ancestors'), and with `magit-section-cache-visibility` so does one that disappears and comes back. `magit-section-initial-visibility-alist` says which kinds of section start hidden, as `[type, "show" | "hide"]` pairs, or `[[type, parent-type...], ...]` for a lineage; `magit-section-set-visibility-hook` can decide too, and `magit-section-movement-hook` runs after each move. `M-x magit-describe-section-briefly` shows the section at point.
+
+For a package building on it, besides `insertRoot`, `insertSection` and `insertHeading` (with a count of children, `true` for one worked out afterwards, or a heading ending in `:`): `magitCancelSection` drops an empty section, `magitInsertSectionBody` inserts a hidden section's body only when it is first shown, `magitGetSection` and `magitSectionIdent` find a section again, `magitSectionMatch`, `magitRegionSections` and `magitRegionValues` say what is at point or selected, and `magitSectionDefineType` gives a type a heading highlight face, a keymap, or a painter that redraws its text when highlighted, as Magit's diff hunks are.
 
 ### Writing a mode with it
 
