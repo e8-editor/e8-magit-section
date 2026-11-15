@@ -1,6 +1,13 @@
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/e8-editor/e8/main/docs/assets/banner-ports-dark.png">
+  <img alt="E8 package ports" src="https://raw.githubusercontent.com/e8-editor/e8/main/docs/assets/banner-ports-light.png">
+</picture>
+
+Part of the [E8 package ports](https://github.com/e8-editor/e8#packages): Emacs packages ported to [E8](https://github.com/e8-editor/e8) and maintained with it. This is a port of [magit-section](https://github.com/magit/magit) 4.4.0, from the Magit repository, by Jonas Bernoulli and the [Magit contributors](https://github.com/magit/magit/blob/main/docs/AUTHORS.md). The design and the original code are theirs; the port keeps upstream's licence, the GNU General Public License version 3 or later.
+
 # e8-magit-section
 
-Buffers made of nested sections, for [E8](https://github.com/e8-editor/e8): each section is a heading line and its content, which `TAB` hides and shows, and `n`, `p`, `M-n`, `M-p` and `^` move between them. It is what [e8-magit](https://github.com/e8-editor/e8-magit)'s buffers are built from, and other packages can build on it too. A port of Magit's magit-section.el 4.4.0.
+Buffers made of nested sections, for [E8](https://github.com/e8-editor/e8): each section is a heading line and its content, which `TAB` hides and shows, and `n`, `p`, `M-n`, `M-p` and `^` move between them. It is what [e8-magit](https://github.com/e8-editor/e8-magit)'s buffers are built from, and other packages can build on it too.
 
 ## Installing
 
@@ -72,7 +79,7 @@ e8.defineCommand({
 
 ## Credit
 
-This is a port to E8 of [magit-section](https://github.com/magit/magit) 4.4.0, from the Magit repository, by Jonas Bernoulli and the [Magit contributors](https://github.com/magit/magit/blob/main/docs/AUTHORS.md), copyright The Magit Project Contributors, and distributed in NonGNU ELPA and MELPA, under the GNU General Public License version 3 or later. It is not the upstream authors' work as published, and they do not endorse it: report problems with the port here, not upstream.
+magit-section 4.4.0 is copyright The Magit Project Contributors and distributed in NonGNU ELPA and MELPA, under the GNU General Public License version 3 or later. This port is not the upstream authors' work as published, and they do not endorse it: report problems with the port here, not upstream.
 
 ## Developing
 
