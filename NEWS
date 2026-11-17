@@ -1,0 +1,65 @@
+magit-section NEWS -- history of user-visible changes.
+
+This is the news of e8-magit-section, the E8 port of magit-section.
+'C-h P' shows it under the package's description.
+
+
+* Changes in magit-section 0.2.0
+
+This release completes the port of magit-section from Magit 4.4.0.
+
+** A refreshed section keeps its visibility, found by its identity.
+Its type and value and its ancestors' identify it, and with
+'magit-section-cache-visibility' a section that comes back does too.
+
+** 'magit-section-initial-visibility-alist' takes lineages of types.
+'magit-section-set-visibility-hook' can decide a section's visibility.
+
+** '1' to '4' act around point, and 'M-1' to 'M-4' on all sections.
+
+** 'C-c TAB' and 'M-<tab>' cycle the section, as 'C-<tab>' does.
+
+** Headings show the number of their children, in Magit's three forms.
+
+** The region selects sibling sections, and highlights them.
+
+** 'magit-section-show' and 'magit-section-hide' show and hide one.
+
+** 'M-x magit-describe-section-briefly' describes the section at point.
+
+** The GUI shows a section's visibility in the fringe.
+
+** Packages can find sections again, and insert bodies only when shown.
+'magitGetSection' finds a section by its identity, 'magitCancelSection'
+drops an empty one, and 'magitInsertSectionBody' waits to be shown.
+
+** 'magitSectionDefineType' gives a type a face, keymap or painter.
+
+
+* Changes in magit-section 0.1.0
+
+This is the first release, a port of magit-section from Magit 4.4.0.
+
+** 'magit-section-mode' makes a buffer of nested sections.
+
+** 'TAB' hides and shows the content of the section at point.
+
+** 'C-<tab>' cycles a section and its children.
+
+** '<backtab>' and 'S-<tab>' cycle every top-level section.
+
+** 'n' and 'p' move to the next and previous section that shows.
+
+** 'M-n', 'M-p' and '^' move to the siblings and the parent section.
+
+** '1' to '4' show the sections to that level.
+
+** 'magit-section-highlight' highlights the section at point.
+
+** 'magit-section-initial-visibility-alist' says what starts hidden.
+
+** 'magit-section-movement-hook' runs after each move.
+
+** 'insertRoot', 'insertSection' and 'insertHeading' build sections.
+A package writes a mode on 'magit-section-mode' with them, as
+e8-magit does.
